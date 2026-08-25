@@ -1,0 +1,66 @@
+\makeatletter
+
+\newcommand{\@@author}          {Dustin Miao}
+\newcommand{\@@andrewid}        {dustinmi}
+\newcommand{\@@course}          {xx-xxx}
+\newcommand{\@@section}         {x}
+\newcommand{\@@duedate}         {[Month] xx, 2026}
+\newcommand{\@@hwnum}           {xx}
+
+\newtoggle{@@uselmodern}        \toggletrue{@@uselmodern}
+\newtoggle{@@psetcmds}          \togglefalse{@@psetcmds}
+\newtoggle{@@includefigures}    \togglefalse{@@includefigures}
+\newtoggle{@@includecode}       \toggletrue{@@includecode}
+\newtoggle{@@includebiblio}     \togglefalse{@@includebiblio}
+\newtoggle{@@includetikz}       \togglefalse{@@includetikz}
+\newtoggle{@@includeurl}        \togglefalse{@@includeurl}
+
+\newtoggle{@@parspace}          \toggletrue{@@parspace}
+\newtoggle{@@parindent}         \togglefalse{@@parindent}
+
+\makeatother
+
+\iffalse
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|x|x|}
+    \hline
+    title1 & title2 \hline
+    xx & xx \\
+    xx & xx \\
+    \hline
+  \end{tabular}
+  \caption{xxxxx}
+  \label{px:tab:xxxxx}
+\end{table}
+
+% figures should be stored in ./figures/
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.40\textwidth]{px_xxxxx}
+  \caption{xxxxx}
+  \label{px:fig:xxxxx}
+\end{figure}
+
+% code block
+% use `style=bg' for no code highlight
+\begin{minted}[opts, ...]{lang}
+def main():
+  print("hello world!")
+\end{minted}
+
+% code block (imported from file)
+\inputminted[firstline=xx, lastline=xx]{lang}{code_file.exp}
+
+% inline code block
+\mint{lang}|print("hello world!")|
+
+% bibliography should be stored in ./references.bib
+% suggested to use bibtex entries from Google scholar w/o changing refname
+
+\url{https://example.com}
+\href{https://example.com}{Visit Example}
+\href{https://example.com}{\textcolor{blue}{\uline{Visit Example}}}
+
+\fi
