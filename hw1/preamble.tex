@@ -76,20 +76,20 @@
 \makeatletter
 
 % redefine \maketitle command
-% \renewcommand{\maketitle}{
-%   \begin{center}
-%     {\huge
-%       Homework \@@hwnum\ Solutions
-%     }
-%
-%     \vspace{1.5em}
-%     \begin{tabular}{rl}
-%       Author: & \@@author\ (\texttt{\@@andrewid}) \\
-%       Course: & \@@course\ \@@section \\
-%       Due by: & \@@duedate
-%     \end{tabular}
-%     \vspace{1.5em}
-%   \end{center}}
+\renewcommand{\maketitle}{
+  \begin{center}
+    {\huge
+      Homework \@@hwnum\ Solutions
+    }
+
+    \vspace{1.5em}
+    \begin{tabular}{rl}
+      Author: & \@@author\ (\texttt{\@@andrewid}) \\
+      Course: & \@@course\ \@@section \\
+      Due by: & \@@duedate
+    \end{tabular}
+    \vspace{1.5em}
+\end{center}}
 
 \iftoggle{@@uselmodern}{
   % imports lmodern font
@@ -542,10 +542,9 @@
 \newcommand{\Ec}[2]{\mathbf{E}\left[ #1 \mid #2 \right]}
 \newcommand{\Ep}[2]{\mathbf{E}_{#1}\left[ #2\right]}
 \newcommand{\Epc}[3]{\mathbf{E}_{#1}\left[ #2 \mid #3 \right]}
-\DeclareMathOperator{\Var}{Va}
-\DeclareMathOperator{\Cov}{Co}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
 
 % values
 \newcommand{\eset}{\varnothing}
 \newcommand{\vZ}{\vec{0}}
-

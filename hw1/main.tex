@@ -1,0 +1,264 @@
+\documentclass{article}
+\input{preamble}
+\usepackage{bm}
+\usepackage{twemojis}
+
+\title{10-405}
+
+\renewcommand{\tt}[1]{\texttt{#1}}
+\newcommand{\ReLu}{\mathrm{ReLu}}
+\newcommand{\oal}{\overline{\alpha}}
+\newcommand{\obe}{\overline{\beta}}
+
+\begin{document}
+
+\maketitle
+
+\ZS{Task 1.1}
+
+For an $n$-dimensional sample space (i.e., $x_0\in\bbR^n$), we have that
+\BA{
+  W_2^2(\calN(0,\vbI),\calN(\sqrt{\oal_T}\vbx_0,(1-\oal_T)\vbI))
+  &=\bnm{\sqrt{\oal}_T\vbx_0}^2+n(1+(1-\oal_T)-2(1-\oal_T)^{1/2}) \\
+  &=\oal_T\bnm{\vbx_0}^2+n(2-\oal_T-2\sqrt{1-\oal_T}).
+}
+As $\oal\to 0$, the Wasserstein distance also approaches $0$.
+
+\ZS{Task 1.2}
+
+We have
+\BA{
+  \log \oal_T&=\sum_{t=1}^T\log (1-\beta_t)
+  \geq -\sum_{t=1}^T \f{\beta_t}{1-\beta_t}
+  \geq -\f{1}{1-\beta_\text{max}}\sum_{t=1}^T \beta_t
+  =-\f{\f{T}{2}(\beta_\text{min}+\beta_\text{max})}{1-\beta_\text{max}} \\
+  &\therefore\oal_T\geq\exp\bpa{-\f{\f{T}{2}(\beta_\text{min}+\beta_\text{max})}{1-\beta_\text{max}}}
+}
+as the lower bound on $\oal_T$. The corresponding upper bound (using
+$\log(1-x)\leq -x$) is
+\BE{
+  \log \oal_T\leq -\f{T}{2}(\beta_\text{min}+\beta_\text{max}).
+}
+Together, this gives
+\BE{
+  -\f{\f{T}{2}(\beta_\text{min}+\beta_\text{max})}{1-\beta_\text{max}}\leq
+  \log\oal_T\leq-\f{T}{2}(\beta_\text{min}+\beta_\text{max}),
+}
+so
+$\log\oal_T=-\f{T}{2}(\beta_\text{min}+\beta_\text{max})(1+O(\beta_\text{max}))$.
+If $\beta_\text{max}\ll 1$, then the lower bound is approximately
+equal to the upper bound, since $1-\beta_\text{max}\approx 1$. For
+constant schedule $\beta'=\f{1}{2}(\beta_\text{min}+\beta_\text{max})$,
+we have
+\BE{
+  \log\oal_T'=T\log(1-\beta')=-T(\beta'+O(\beta'^2))=-\f{T}{2}(\beta_\text{min}+\beta_\text{max})(1+O(\beta^2_\text{max}))
+}
+This shows that the $\log\oal_T$ decays at the same rate in both
+schedules to the leading order of $\beta_\text{max}$.
+
+\ZS{Task 1.3}
+
+This cosine scheduler is useful because for $1\leq t\leq T$, $\oal_t$
+approach $0$ slower compared to a linear scheduler for $\beta_t$
+(Figure \ref{fig:noise-schedules}).
+This means for fixed $T$ that more steps are spent on denoising
+meaningful inputs that are not just pure noise. The change in
+$\oal_t$ is also relatively uniform w.r.t. $T$, which is necessary to ensure
+that $p(x_{t-1}\mid x_t)$ is near-Gaussian. Finally, the rate of
+change at $t/T\approx0$ and $t/T\approx 1$ are small, which is useful
+in the former to ensure fine details in the input are not immediately
+noised out, and useful in the latter to keep $\beta_t$ bounded as $\oal_t\to 0$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.60\textwidth]{noise_schedule}
+  \caption{$\oal_t$ vs $T$ for cosine and linear schedules. Parameters:$s=0.08$,
+  $T=1000$, $\beta_\text{min}=10^{-4}$, $\beta_\text{max}=0.02$.}
+  \label{fig:noise-schedules}
+\end{figure}
+
+\ZS{Task 2.1}
+\BN{
+\item
+  We first show that $\P{\bab{X_n-X}>\epsilon}\leq
+  \E{\epsilon^{-1}\bab{X_n-X}}$:
+  \BA{
+    \E{\epsilon^{-1}\bab{X_n-X}}
+    &=\int_\Omega \epsilon^{-1}\bab{X_n-X} \d P(\omega) \\
+    &\geq\int_\Omega \epsilon^{-1}\bab{X_n-X}
+    I_{\bab{X_n-X}>\epsilon}\d P(\omega) \\
+    &\geq\int_\Omega \epsilon^{-1}\cdot\epsilon
+    I_{\bab{X_n-X}>\epsilon}\d P(\omega) \\
+    &=\int_\Omega I_{\bab{X_n-X}>\epsilon}\d
+    P(\omega) \\
+    &=\P{\bab{X_n-X>}\epsilon}.
+  }
+  From Task 2.1.2, we have that $X_n\xrightarrow{L_2}X\imp
+  X_n\xrightarrow{L_1} X$. For fixed $\epsilon>0$, we have
+  \BA{
+    0
+    =\lim_{n\to\infty} \E{\bab{X_n-X}}
+    &=\lim_{n\to\infty}\E{\epsilon^{-1}\bab{X_n-X}} \\
+    &=\limsup_{n\to\infty}\E{\epsilon^{-1}\bab{X_n-X}} \\
+    &\geq\limsup_{n\to\infty}\P{\bab{X_n-X>}\epsilon}.
+  }
+  Since $\P{\cdot}\geq 0$, we have
+  $\liminf_{n\to\infty}\P{\bab{X_n-X>}\epsilon}=0$, showing that
+  \BE{
+    \lim_{n\to\infty}\P{\bab{X_n-X}>\epsilon}
+  }
+  exists and is equal to $0$ by the Squeeze theorem, giving
+  $X_n\xrightarrow{p}X$, as desired.
+
+\item
+  From Holder's inequality with $a=p/q$, $b=\f{p}{p-q}$ (satisfying
+  $a,b>1$ since $p>q$ and $1/a+1/b=1$ by construction), we get
+  \BE{
+    \E{\bab{X_n-X}^q\cdot 1}\leq \E{\bab{X_n-X}^{q\cdot
+    a}}^{1/a}\cdot (1^b)^{1/b}=\E{\bab{X_n-X}^p}^{q/p}.
+  }
+  Since $X_n\xrightarrow{L_p} X$, we have that
+  \BE{
+    0=\lim_{n\to\infty}\Eb\bab{X_n-X}^p=\lim_{n\to\infty}\E{\bab{X_n-X}^p}^{q/p}.
+  }
+  Together, this shows that
+  \BE{
+    \lim_{n\to\infty} \Eb\bab{X_n-X}^q\leq
+    \lim_{n\to\infty}\E{\bab{X_n-X}^p}^{q/p}=0.
+  }
+  Since $\bab{X_n-X}\geq 0$, the limit exists and is equal to $0$.
+
+\item
+  The implication $X_n\xrightarrow{L_2}X\imp X_n\xrightarrow{L_1}$
+  follows immediately from Task 2.1.2 and the implication
+  $X_n\xrightarrow{p}\imp X_n\xrightarrow{d}$ is given. For the
+  middle implication, we showed in Task 2.1.1 that the stronger statement of
+  $X_n\xrightarrow{L_1}\imp X_n\xrightarrow{p}$ holds. Together, this shows
+  that the implication chain holds as each step.
+}
+
+\ZS{Task 2.2}
+
+Let $I_{[a,b]}$ denote the indicator variable that is $1$ on
+$[a,b]$ and $0$ elsewhere.
+\BN{
+\item
+  Consider $X_n=n^{1/2} I_{[0,1/n]}$ and $X=0$ defined on $U(0,1)$.
+  We have that
+  \BA{
+    \lim_{n\to\infty}
+    \Eb\bab{n^{1/2}I_{[0,1/n]}}^2&=\lim_{n\to\infty} 1/n\cdot n=1 \\
+    \lim_{n\to\infty} \Eb\bab{n^{1/2}I_{[0,1/n]}}^1&=\lim_{n\to\infty}
+    1/n\cdot n^{1/2}=0,
+  }
+  showing that $X_n\xrightarrow{L_1} X$ but not $X_n\xrightarrow{L_2} X$.
+
+\item
+  Consider $X_n=n I_{[0,1/n]}$ and $X=0$ defined on $U(0,1)$.  We have that
+  \BE{
+    \lim_{n\to\infty}
+    \Eb\bab{n I_{[0,1/n]}}^1=\lim_{n\to\infty} 1/n\cdot n=1,
+  }
+  so $X_n$ is not $L_1$ convergent to $X$. Then,
+  \BE{
+    \lim_{n\to\infty}
+    \P{\bab{X_n-X}>\epsilon}=\lim_{n\to\infty}\P{X_n>\epsilon}=\lim_{n\to\infty}\P{U(0,1)\leq
+    1/n}=\lim_{n\to\infty} 1/n=0,
+  }
+  showing that $X_n\xrightarrow{p} X$.
+
+\item
+  Let $X=U(\{-1,1\})$ and $X_n=-X$ for all $n\geq 1$. Since $X$ and
+  $X_n$ have the same distribution by symmetry, $X_n\xrightarrow{d} X$
+  trivially. However, $\bab{X_n-X}=2$ for all $n$, so $X_n$ does
+  not converge to $X$ in probability.
+}
+
+\ZS{Task 3.1}
+We have that
+\BA{
+  x_t
+  &=\sqrt{\alpha_t}\bpa{\sqrt{\oal_{t-1}}x_0+\sqrt{1-\oal_{t-1}}\epsilon'}+\sqrt{\beta_t}z_t
+  \\
+  &=\sqrt{\oal_{t-1}\alpha_t}x_0+\sqrt{(1-\oal_{t-1})\alpha_t}\epsilon'+\sqrt{\beta_t}z_t
+  \\
+  &=\sqrt{\oal_t}x_0+\sqrt{(1-\oal_{t-1})\alpha_t+\beta_t}\epsilon \\
+  &=\sqrt{\oal_t}x_0+\sqrt{\alpha_t-\oal_{t}+\beta_t}\epsilon \\
+  &=\sqrt{\oal_t}x_0+\sqrt{1-\oal_t}\epsilon
+}
+where $\epsilon\sim \calN(0,I)$, showing the induction hypothesis.
+In particular, step 2 to 3 follows from the additivity of two
+independent Gaussians. Then,
+\BE{
+  \Ec{x_t}{x_0}=\sqrt{\oal_t}x_0+\sqrt{1-\oal_t}\E{\epsilon}=\sqrt{\oal_t}x_0,
+}
+as desired.
+
+\ZS{Task 3.2}
+We have that
+\BE{
+  \Cov(x_t\mid x_0)=\Ec{(x_t-\mu)(x_t-\mu)^\top}{x_0},
+}
+where $\mu=\Ec{x_t}{x_0}=\sqrt{\oal_t}x_0$. Then,
+$x_t-\mu=\sqrt{1-\oal_t}\epsilon$. This gives
+\BE{
+  \Ec{(x_t-\mu)(x_t-\mu)^\top}{x_0}=\Ec{(\sqrt{1-\oal_t}\epsilon)(\sqrt{1-\oal_t}\epsilon)^\top}{x_0}=(1-\oal_t)\E{\epsilon\epsilon^\top}=(1-\oal_t)\vbI.
+}
+Since each Markov step adds independent Gaussian
+noise, the distribution of $x_t$ is an affine function of $x_0$
+plus a sum of independent Gaussians, so conditioned on $x_0$ it is
+Gaussian. As shown above, the distribution has mean $\sqrt{\oal_t}x_0$
+and covariance $(1-\oal_t)\vbI$, giving
+\BE{
+  q(x_t\mid x_0)=\calN(x_t;\sqrt{\oal_t}x_0, (1-\oal_t)\vbI),
+}
+as desired.
+
+\ZS{Task 3.3}
+
+We have
+\BA{
+  \Eb\bnm{x_t}^2
+  &=\E{(\sqrt{\oal_t}x_0)^\top(\sqrt{\oal_t}x_0) +
+2(\sqrt{\oal_t}x_0))^\top(\sqrt{1-\oal_t}\epsilon)+(\sqrt{1-\oal_t}\epsilon)^\top(\sqrt{1-\oal_t}\epsilon)}
+\\
+&=\oal_t\E{x_0^\top x_0}+(1-\oal_t)\E{\epsilon^\top\epsilon} \\
+&=\oal_td+(1-\oal_t)d \\
+&=d.
+}
+The removal of the cross term is due to the independence of $x_0$ and
+$\epsilon$. As $\oal_T\to 0$, $q(x_T\mid x_0)$
+approaches $\calN(0,\vbI)$. For
+the given formula for $\beta_t$, $\oal_{100}\approx 0.602$,
+$\sqrt{\oal_{100}}\approx 0.776$, $\sqrt{1-\oal_{100}}\approx 0.630$.
+
+\ZS{Task 4.1}
+We have
+\BA{
+\Var(W_t-W_s)=\Cov(W_t-W_s,W_t-W_s)=\Var(W_t)+\Var(W_s)-2\Cov(W_s,W_t)=t+s-2s=t-s.
+}
+This is consistent with the distribution of $W_t-W_s$ being $\calN(0,t-s)$.
+
+\ZS{Task 4.2}
+We have
+\BA{
+\Var(W_1+W_2)&=\Var(2W_1+(W_2-W_1))=4\Var(W_1)+\Var(W_2-W_1)=5 \\
+\Cov(W_1,W_3-W_2)&=0.
+}
+The intervals $[0,1]$ and $[2,3]$ are disjoint, so the Weiner
+process increments
+on those intervals are independent, implying a covariance of $0$.
+
+\ZS{Task 4.3}
+We have
+\BE{
+\mathrm{Corr}(W_s,
+W_t)=\f{\Cov(W_s,W_t)}{\sqrt{\Var(s)\Var(t)}}=\f{s}{\sqrt{st}}=\sqrt{s/t}.
+}
+For $s=1, t=4$, $\mathrm{Corr}(W_s,W_t)=1/2$. As $t\to\infty$ with
+$s$ fixed, $\mathrm{Corr}(W_s,W_t)\to 0$. This shows that earlier
+values for a Wiener process matter increasingly less as the time
+window grows, since $\Var(W_t)$ grows without bound and $W_s$
+remains constant.
+
+\end{document}
