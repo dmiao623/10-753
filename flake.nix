@@ -13,6 +13,7 @@
     {
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = with pkgs; [
+          graphviz
           python312
           stdenv.cc.cc.lib
           texliveFull
