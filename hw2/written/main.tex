@@ -1,0 +1,123 @@
+\documentclass{article}
+\input{preamble}
+\usepackage{bm}
+\usepackage{twemojis}
+
+\renewcommand{\tt}[1]{\texttt{#1}}
+\newcommand{\ReLu}{\mathrm{ReLu}}
+\newcommand{\oal}{\overline{\alpha}}
+\newcommand{\obe}{\overline{\beta}}
+
+\begin{document}
+
+\maketitle
+
+\ZS{Task 1.1}
+
+We have that $X$ is a zero-centered Gaussian since $e^{-t}$ is a
+deterministic function of time. Then, by Ito isometry,
+\BE{
+  \Var(X)=\E{\bpa{\int_0^2 e^{-t}\d W_t}^2}=\int_0^2 e^{-2t}\d
+  t=\f{1-e^{-4}}{4}.
+}
+Thus, $X\sim\calN(0,(1-e^{-4})/4)$.
+
+\ZS{Task 1.2}
+
+Let $f(t)$ be the piecewise function
+\BE{
+  f(t)=\BC{1 & 0\leq t\leq 1/2 \\ 2 & 1/2 \leq t\leq 1}.
+}
+Because $f(t)$ is time-dependent, $X$ is a zero-centered Gaussian with variance
+\BE{
+  \Var(X)=\E{\bpa{\int_0^1 f(t)\d W_t}^2}=\int_0^1 f(t)^2\d t = 2.5.
+}
+Thus, $X\sim\calN(0,2.5)$.
+
+\ZS{Task 1.3}
+
+We have that
+\BA{
+  \Var(X)&=\E{\bpa{\int_0^1 t\d W_t}^2}=\int_0^1 t^2\d W_t=1/3 \\
+  \Var(Y)&=\E{\bpa{\int_0^1 (1-t)\d W_t}^2}=\int_0^1 (1-t)^2\d W_t=1/3 \\
+  \Cov(X, Y)&=\int_0^1 t(1-t)\d t=1/6.
+}
+Thus, $X$ and $Y$ are not independent because they have a non-zero covariance.
+
+\ZS{Task 1.4}
+
+\ZS{Task 1.10}
+
+\BV{
+\item True. We have that
+  \BE{
+    \int_0^1 f(t)\d W_t=\lim_{\bab{\Pi}\to0} \sum_{i=1}^{n-1}
+    f(t_i)(W_{t_{i+1}}-W_{t_i}),
+  }
+  where each interval $W_{t_{i+1}}-W_{t_i}\sim\calN(0,\Delta t_i)$
+  and $W_{t_{i+1}}-W_{t_i}\perp W_{t_{j+1}}-W_{t_j}$ for $i\neq j$.
+  Thus, for any partition $\Pi$, $\int_0^1 f(t)\d W_t$ is a weighted
+  sum of independent Gaussians, so it must be normally distributed.
+}
+
+\ZS{Task 2}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item
+\begin{minted}{python}
+       t |    E[W_n(t)] |   theory=0 |   Var[W_n(t)] |   theory=t
+  ---------------------------------------------------------------
+   0.100 |     -0.00473 |      0.000 |       0.10167 |      0.100
+   0.250 |     -0.00961 |      0.000 |       0.25102 |      0.250
+   0.500 |     -0.01644 |      0.000 |       0.50755 |      0.500
+   0.750 |     -0.02026 |      0.000 |       0.77095 |      0.750
+   1.000 |     -0.02012 |      0.000 |       1.02874 |      1.000
+\end{minted}
+
+  \item
+    See Figure \ref{fig:plot-paths-output}.
+
+    \begin{figure}[h!]
+      \centering
+      \includegraphics[width=0.75\textwidth]{plot_paths_output.png}
+      \caption{25 generated Wiener processes with $95\%$ envelope}
+      \label{fig:plot-paths-output}
+    \end{figure}
+
+  \item
+    See Figure \ref{fig:calc-increments-output}.
+
+    \begin{figure}[h!]
+      \centering
+      \includegraphics[width=0.75\textwidth]{calc_increments_output.png}
+      \caption{Empirical distribution of Wiener process increments}
+      \label{fig:calc-increments-output}
+    \end{figure}
+
+\end{enumerate}
+
+\newpage
+
+\ZS{Collaboration Questions}
+\BN{
+\item
+  \BV{
+  \item Did you receive any help whatsoever from anyone in solving
+    this assignment? No.
+  \item If you answered `yes', give full details. N/A.
+  }
+\item
+  \BV{
+  \item Did you give any help whatsoever to anyone in solving this
+    assignment? No.
+  \item If you answered `yes', give full details. N/A.
+  }
+\item
+  \BV{
+  \item Did you find or come across code that implements any part of
+    this assignment? No.
+  \item If you answered `yes', give full details. N/A.
+  }
+}
+
+\end{document}
