@@ -38,32 +38,241 @@ Thus, $X\sim\calN(0,2.5)$.
 
 We have that
 \BA{
-  \Var(X)&=\E{\bpa{\int_0^1 t\d W_t}^2}=\int_0^1 t^2\d W_t=1/3 \\
-  \Var(Y)&=\E{\bpa{\int_0^1 (1-t)\d W_t}^2}=\int_0^1 (1-t)^2\d W_t=1/3 \\
+  \Var(X)&=\E{\bpa{\int_0^1 t\d W_t}^2}=\int_0^1 t^2\d t=1/3 \\
+  \Var(Y)&=\E{\bpa{\int_0^1 (1-t)\d W_t}^2}=\int_0^1 (1-t)^2\d t=1/3 \\
   \Cov(X, Y)&=\int_0^1 t(1-t)\d t=1/6.
+}
+This gives the joint distribution
+\BE{
+  \MB{X \\ Y} \sim\calN\bpa{\MB{0 \\ 0}, \MB{1/3 & 1/6 \\ 1/6 & 1/3}}.
 }
 Thus, $X$ and $Y$ are not independent because they have a non-zero covariance.
 
 \ZS{Task 1.4}
 
+Let $a,b\in \bbR$ be arbitrary reals. Then,
+\BE{
+  aX + bY = a\int_0^1 1\d W_t+b\int_0^1 \bpa{t-\f12}\d W_t=\int_0^1
+  \bpa{a+bt-\f b2}\d W_t.
+}
+Since the integrand is deterministic, it follows that the
+distribution of $aX+bY$ must be Gaussian, showing that the joint
+distribution is Gaussian. Then,
+\BE{
+  \Cov(X,Y)=\int_0^1 \bpa{t-\f12}^2\d t=\left.
+  \bpa{\f{t^2}{2}-\f{t}2}\right\vert_0^1=0.
+}
+Since the joint distribution is Gaussian and the covariance is $0$,
+it follows that $X$ and $Y$ are independent.
+
+\ZS{Task 1.5}
+
+The integral form of Ito's formula is
+\BE{
+  f(W_t)-f(W_0)=\int_0^T f'(W_t)\d W_t + \f12\int_0^T f''(W_t)\d t.
+}
+Substituting $f(x)=x^3/3$ and rearranging gives
+\BE{
+  \int_0^1 W_t^2\d W_t=\f13 W_1^3 - \int_0^1 W_t\d t.
+}
+
+\ZS{Task 1.6}
+
+\BV{
+\item
+  Evaluating Ito's formula with $f(x)=\f{1}{2}x^2$ in the interval
+  $[0,1]$ gives
+  \BE{
+    \f{1}{2}W_1^2=\int_0^1 W_t\d W_t+\f12.
+  }
+  Rearranging and taking the expectation, we get that
+  \BE{
+    \E{\int_0^1 W_t\d W_t}=\E{\f{W_1^2-1}{2}}=\f{\E{W_1^2}-1}{2}=0.
+  }
+
+\item
+  From Ito Isometry, we have that
+  \BA{
+    \E{\bpa{\int_0^1 W_t\d W_t}^2}=\E{\int_0^1 W_t^2\d t}=\int_0^1
+    \E{W_t^2} \d t=\int_0^1 t\d t=1/2.
+  }
+}
+
+\ZS{Task 1.7}
+Consider the product rule applied to processes $W_t$ and $t$ on $[0,1]$:
+\BE{
+  W_1=\int_0^1 W_t\d t+\int_0^1 t\d W_t+\int_0^1 \d [W_t,t].
+}
+The final term on the RHS reduces to $0$, so rearranging gives the
+desired result of
+\BE{
+  \int_0^1 t\d W_t=W_1 - \int_0^1 W_t\d t.
+}
+Then,
+\BA{
+  \Var\bpa{\int_0^1 W_t\d t}
+  =\E{\bpa{\int_0^1 W_t\d t}^2}
+  &=\E{\bpa{W_1-\int_0^1 t\d W_t}^2} \\
+  &=\E{\bpa{\int_0^1 1\d W_t-\int_0^1 t\d W_t}^2} \\
+  &=\E{\bpa{\int_0^1 (1-t)\d W_t}^2} \\
+  &=\int_0^1 (1-t)^2\d t \\
+  &=1/3.
+}
+
+\ZS{Task 1.8}
+
+Let $Z=\int_a^b t\d W_t$. $Z$ is a $0$-centered Gaussian with variance
+\BE{
+  \Var(Z)=\E{\bpa{\int_a^b t\d W_t}^2}=\int_a^b t^2\d t=\f{1}{3}(b^3-a^3).
+}
+Thus, $X\sim\calN(0,1/24)$, $Y\sim\calN(0,7/24)$, and
+\BE{
+  X+Y=\int_0^1 t\d W_t\sim\calN(0,1/3).
+}
+Then, $X$ and $Y$ are independent since they are integrals of
+deterministic function against Brownian increments $[0,1/2]$ and
+$[1/2,1]$, which are independent.
+
+\ZS{Task 1.9}
+
+Since the integrand of $X_s$ is deterministic, it must have mean $0$:
+$\E{X_S}=0$. Then, the covariance of $X_S$ and $X_t$ is given by
+\BE{
+  \Cov(X_s,X_t)=\E{\bpa{\int_0^s u\d W_u}\bpa{\int_0^t u\d
+  W_u}}=\int_0^{\min(s,t)} u^2\d u=\f13(\min(s,t))^3.
+}
+It follows that the variance $\Var(X_t)=\f13 t^3$.
+
+Let $s_1,\dots,s_n>0$ and $a_1,\dots,a_n\in\bbR$ be arbitrary time
+points and real coefficients, respectively. Then,
+\BE{
+  \sum_{i=1}^n a_iX_{s_i}=\sum_{i=1}^n \bpa{a_i\int_0^{s_i} t\d
+  W_t}=\int_0^1 \bpa{\sum_{i=1}^n a_i t \mathbf{1}_{t\leq s_i}}\d W_t.
+}
+The integrand is deterministic, so the integral must be Gaussian.
+Thus, the join distribution is Gaussian, showing that
+$(X_s)_{s\in[0,1]}$ is a Gaussian process.
+
 \ZS{Task 1.10}
 
 \BV{
-\item True. We have that
+\item True. Since $f\in L^2\bpa{[0,1]}$, by the Density of Step
+  Function theorem, we have that for some sequence of step functions
+  $f_n\in L^2\bpa([0,1])$
   \BE{
-    \int_0^1 f(t)\d W_t=\lim_{\bab{\Pi}\to0} \sum_{i=1}^{n-1}
-    f(t_i)(W_{t_{i+1}}-W_{t_i}),
+    f_n(t)=\sum_{i=0}^{k_n-1} c_i^{(n)} \mathbf{1}_{[t_i, t_{i+1}]}(t),
   }
-  where each interval $W_{t_{i+1}}-W_{t_i}\sim\calN(0,\Delta t_i)$
-  and $W_{t_{i+1}}-W_{t_i}\perp W_{t_{j+1}}-W_{t_j}$ for $i\neq j$.
-  Thus, for any partition $\Pi$, $\int_0^1 f(t)\d W_t$ is a weighted
-  sum of independent Gaussians, so it must be normally distributed.
-}
+  that $f_n\xrightarrow{L_2} f$. Define $X_n=\int_0^1 f_n(t)\d W_t$
+  and $X=\int_0^1 f(t)\d W_t$. From Ito isometry,
+  \BE{
+    \E{(X_n-X)^2}=\E{\bpa{\int_0^1 (f_n(t)-f(t))\d
+    W_t}^2}=\int_0^1 \bpa{f_n(t)-f(t)}^2\d t,
+  }
+  which tends to $0$ as $n\to\infty$. This shows that
+  $X_n\xrightarrow{L_2}X$. Furthermore, for any $X_n$, we have that
+  \BE{
+    X_n=\int_0^1 f_n(t)\d W_t=\sum_{i=0}^{k_n-1}
+    c_i^{(n)}(W_{t_{i+1}}-W_{t_i}).
+  }
+  Since $[t_i,t_{i+1}]$ interval is disjoint and Wiener process
+  increments are normally distributed, this means that each $X_n$ is
+  a weighted sum of independent Gaussians and is thus a Gaussian
+  random variable. Since each $X_n$ is Gaussian,
+  $X_n\xrightarrow{L_2}X$, and Gaussian distributions are closed
+  under convergence in distribution, it follows that $X$ is also a
+  Gaussian random variable, as desired.
 
-\ZS{Task 3}
+\item
+  False. For $X_t=W_t$ (adapted and in $L^2([0,1])$, the integral
+    evaluates to $\f12 (W_1^2-1)$
+    which is a shifted and scaled $\chi^2$ variable.
 
-\begin{enumerate}[label=(\arabic*)]
   \item
+    True. For an adapted, square-integratable stochastic process $X_t$,
+    the Ito integral $M_t=\int_0^t X_s\d W_t$ is a true martingale
+    w.r.t. the filtration of Brownian motion. Then, by the martingale
+    property, the expected value remains constant over time, so
+    $\E{M_1}=\E{M_0}=0$.
+
+  \item
+    True. For any deterministic $f\in L^2([0,1])$, the Ito integral has
+    mean $0$ (from part c, since any deterministic function must be
+    adapted). Then, by Ito isometry,
+    \BA{
+      \Var\bpa{\int_0^1 f(t)\d W_t}
+      &=\E{\bpa{\int_0^1 f(t)\d
+      W_t}}-\E{\int_0^1 f(t)\d W_t}^2 \\
+      &=\E{\bpa{\int_0^1 f(t)\d W_t}^2} \\
+      &=\int_0^1 f(t)^2\d t,
+    }
+    as desired.
+  }
+
+  \ZS{Task 2.1}
+
+  We have for any $\Pi_n$ that
+  \BA{
+    Q_{\Pi_n}(X_t)
+    &=\sum_{i=0}^{n-1} (X_{t_{i+1}}-X_{t_i})^2 \\
+    &=\sum_{i=0}^{n-1} (W_{t_{i+1}}-W_{t_i}+f(t_{i+1})-f(t_i))^2 \\
+    &=\sum_{i=0}^{n-1} (W_{t_{i+1}}-W_{t_i})^2 + \sum_{i=0}^{n-1}
+    (f(t_{i+1})-f(t_i))^2 + 2\sum_{i=0}^{n-1}
+    (W_{t_{i+1}}-W_{t_i})(f(t_{i+1})-f(t_i)) \\
+    \bab{Q_{\Pi_n}(X_t)-Q_{\Pi_n}(W_t)} &\leq Q_{\Pi_n}(f)
+    + 2\bab{\sum_{i=0}^{n-1}
+    (W_{t_{i+1}}-W_{t_i})(f(t_{i+1})-f(t_i))} \\
+    &\leq Q_{\Pi_n}(f) + 2\sum_{i=0}^{n-1}
+    \bab{W_{t_{i+1}}-W_{t_i}}\bab{f(t_{i+1})-f(t_i)} \\
+    &\leq Q_{\Pi_n}(f) + 2\sqrt{\bpa{\sum_{i=0}^{n-1}
+    (W_{t_{i+1}}-W_{t_i})^2}\bpa{\sum_{i=0}^{n-1}(f(t_{i+1})-f(t_i))^2}} \\
+    &= Q_{\Pi_n}(f) + 2\sqrt{Q_{\Pi_n}(W)Q_{\Pi_n}(f)} \\
+  }
+  We have that $Q_{\Pi_n}(W_t)\xrightarrow{L_2} T$ and
+  $Q_{\Pi_n}(f)\xrightarrow{L_2} 0$. The bound shows that
+  $\left|Q_{\Pi_n}(X_t)-Q_{\Pi_n}(W_t)\right|\xrightarrow{L_2} 0$
+  (since $Q_{\Pi_n}(f)$ is deterministic), so
+  $Q_{\Pi_n}(X_t)\xrightarrow{L_2} T$ as well.
+
+  \ZS{Task 2.2}
+
+  % We show by contradiction that a strictly positive quadratic variance
+  % implies that the total variance must be infinite. Assume the contrary. Then,
+  % \BA{
+  %   Q_{\Pi_n}(X_t)
+  %   &=\sum_{i=0}^{n-1} (X_{t_{i+1}} - X_{t_i})^2 \\
+  %   &=\sum_{i=0}^{n-1} \bab{X_{t_{i+1}} - X_{t_i}}^2 \\
+  %   &\leq \omega_X(\Delta t)\sum_{i=0}^{n-1} \bab{X_{t_{i+1}} - X_{t_i}} \\
+  %   &=\omega_X(\Delta t) \mathrm{TV}(X)
+  % }
+  % Assuming $X$ is almost-surely continuous, the total variation is
+  % finite and the modulus of continuity tends to $0$ as $\Delta t\to 0$,
+  % therefore the quadratic variation must be $0$, a contradiction.
+  %
+  % Since we showed in Task 2.1 that the quadratic variation is $T$ for
+  % any time $T>0$, it follows that the total variation must be infinite,
+  % as desired.
+
+  We have that $W_t=X_t-f(t)$, so for each interval, we have that
+  \BE{
+    \bab{W_{t_{i+1}}-W_{t_i}}=\bab{(X_{t_{i+1}}-X_{t_i})+(f(t_{i+1})-f(t_i)}\leq
+      \bab{X_{t_{i+1}}-X_{t_i}}+\bab{f(t_{i+1})-f(t_i}.
+      }
+      Summing gives
+      \BE{
+        \mathrm{TV}(W, [0,T])\leq \mathrm{TV}(X, [0,T]) + \mathrm{TV}(f, [0,T]).
+      }
+      Rearranging, we have that
+      \BE{
+        \mathrm{TV}(X, [0,T])\geq \mathrm{TV}(W, [0,T]) - \mathrm{TV}(f, [0,T]).
+      }
+      Since the total variation of a Wiener process is unbounded and
+      the total variation of $f$ is finite, it follows that the total
+      variation of $X$ is infinite.
+
+      \ZS{Task 3}
+
+      \begin{enumerate}[label=(\arabic*)]
+        \item
 \begin{minted}{python}
        t |    E[W_n(t)] |   theory=0 |   Var[W_n(t)] |   theory=t
   ---------------------------------------------------------------
@@ -74,18 +283,18 @@ Thus, $X$ and $Y$ are not independent because they have a non-zero covariance.
    1.000 |     -0.02012 |      0.000 |       1.02874 |      1.000
 \end{minted}
 
-  \item
-    See Figure \ref{fig:plot-paths-output}.
+        \item
+          See Figure \ref{fig:plot-paths-output}.
 
-    \begin{figure}[h!]
-      \centering
-      \includegraphics[width=0.75\textwidth]{plot_paths_output.png}
-      \caption{25 generated Wiener processes with $95\%$ envelope}
-      \label{fig:plot-paths-output}
-    \end{figure}
+          \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.75\textwidth]{plot_paths_output.png}
+            \caption{25 generated Wiener processes with $95\%$ envelope}
+            \label{fig:plot-paths-output}
+          \end{figure}
 
-  \item
-    See Figure \ref{fig:calc-increments-output}. \\
+        \item
+          See Figure \ref{fig:calc-increments-output}. \\
 
 \begin{minted}{python}
                     empirical |  theoretical
@@ -94,134 +303,109 @@ Thus, $X$ and $Y$ are not independent because they have a non-zero covariance.
       variance |      0.39814 |      0.40000
 \end{minted}
 
-    \begin{figure}[h!]
-      \centering
-      \includegraphics[width=0.75\textwidth]{calc_increments_output.png}
-      \caption{Empirical distribution of Wiener process increments}
-      \label{fig:calc-increments-output}
-    \end{figure}
+          \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.75\textwidth]{calc_increments_output.png}
+            \caption{Empirical distribution of Wiener process increments}
+            \label{fig:calc-increments-output}
+          \end{figure}
 
-\end{enumerate}
+      \end{enumerate}
 
-\ZS{Task 4.1}
+      \ZS{Task 4.1}
 
-For $I_1$, the integrand is a deterministic function of time, so it
-must be Gaussian distributed with mean $0$. The variance is given by
-Ito isometry
-\BE{
-  \Var(I_1)=\E{\bpa{\int_0^1 t\d W_t}^2}=\int_0^1 t^2\d t=1/3,
-}
-giving that $I_1\sim\calN(0,1/3)$, as desired.
+      For $I_1$, the integrand is a deterministic function of time, so it
+      must be Gaussian distributed with mean $0$. The variance is given by
+      Ito isometry
+      \BE{
+        \Var(I_1)=\E{\bpa{\int_0^1 t\d W_t}^2}=\int_0^1 t^2\d t=1/3,
+      }
+      giving that $I_1\sim\calN(0,1/3)$, as desired.
 
-\ZS{Task 4.2}
+      \ZS{Task 4.2}
 
-See Figure \ref{fig:time-integral-output}. We use $m=10{,}000$
-Wiener trajectories and $n=5000$ subintervals of $[0,1]$, evaluating
-the integrand at the left endpoint. The empirical distribution is
-close to the theoretical $\calN(0,1/3)$ distribution.
+      See Figure \ref{fig:time-integral-output}. We use $m=10{,}000$
+      Wiener trajectories and $n=5000$ subintervals of $[0,1]$, evaluating
+      the integrand at the left endpoint. The empirical distribution is
+      close to the theoretical $\calN(0,1/3)$ distribution.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.75\textwidth]{time_integral_output.png}
-  \caption{Empirical distribution of left tagged sums for
-    $\int_0^1 t\d W_t$ with the theoretical Gaussian density}
-  \label{fig:time-integral-output}
-\end{figure}
+      \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{time_integral_output.png}
+        \caption{Empirical distribution of left tagged sums for
+        $\int_0^1 t\d W_t$ with the theoretical Gaussian density}
+        \label{fig:time-integral-output}
+      \end{figure}
 
-\ZS{Task 4.3}
+      \ZS{Task 4.3}
 
-See Figure \ref{fig:time-tag-differences-output}. For each
-$n\in\{10,20,50,100,200,500,1000,2000,5000\}$, we calculate all
-three tagged sums on the same $m=10{,}000$ trajectories and take
-the maximum absolute differences across trajectories. We have that
-\BA{
-  S_n(t,\tt{mid})-S_n(t,\tt{left})&=\f{W_1}{2n}, \\
-  S_n(t,\tt{right})-S_n(t,\tt{left})&=\f{W_1}{n}.
-}
-Thus, both differences converge to $0$, so the tag choice does not
-affect the limiting integral.
+      See Figure \ref{fig:time-tag-differences-output}.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.75\textwidth]{time_tag_differences_output.png}
-  \caption{Maximum absolute left--midpoint and left--right tag
-    differences for the deterministic integrand $f(t)=t$}
-  \label{fig:time-tag-differences-output}
-\end{figure}
+      \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{time_tag_differences_output.png}
+        \caption{Maximum absolute left--midpoint and left--right tag
+        differences for the deterministic integrand $f(t)=t$}
+        \label{fig:time-tag-differences-output}
+      \end{figure}
 
-\ZS{Task 4.4}
+      \ZS{Task 4.4}
 
-See Figure \ref{fig:wiener-integral-output}. We again use
-$m=10{,}000$ trajectories and $n=5000$ subintervals, now with
-$f(t)=W_t$ and left endpoint tags. By Ito's formula,
-\BE{
-  I_2=\int_0^1 W_t\d W_t=\f{W_1^2-1}{2}.
-}
-Thus, the limiting distribution is a shifted and scaled
-$\chi^2_1$ distribution, rather than a Gaussian, consistent with
-the histogram. We use $\d W_t$ as specified in the definition of
-the stochastic sums and the caption of Figure 3 in the handout.
+      See Figure \ref{fig:wiener-integral-output}.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.75\textwidth]{wiener_integral_output.png}
-  \caption{Empirical distribution of left tagged sums for
-    $\int_0^1 W_t\d W_t$}
-  \label{fig:wiener-integral-output}
-\end{figure}
+      \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{wiener_integral_output.png}
+        \caption{Empirical distribution of left tagged sums for
+        $\int_0^1 W_t\d W_t$}
+        \label{fig:wiener-integral-output}
+      \end{figure}
 
-\ZS{Task 4.5}
+      \ZS{Task 4.5}
 
-See Figure \ref{fig:wiener-tag-differences-output}. We repeat
-Task 4.3 with $f(t)=W_t$, using the same values of $n$ and $m$.
-The midpoint tags use the Brownian values at the midpoint times,
-obtained by simulating on a grid with $2n$ steps. The limits are
-\BA{
-  S_n(W,\tt{left})&\to\f{W_1^2-1}{2}, \\
-  S_n(W,\tt{mid})&\to\f{W_1^2}{2}, \\
-  S_n(W,\tt{right})&\to\f{W_1^2+1}{2}.
-}
-The left--midpoint and left--right differences approach $1/2$
-and $1$, respectively. Thus, the tag choice matters for this
-stochastic integrand.
+      See Figure \ref{fig:wiener-tag-differences-output}. We repeat
+      Task 4.3 with $f(t)=W_t$, using the same values of $n$ and $m$.
+      The midpoint tags use the Brownian values at the midpoint times,
+      obtained by simulating on a grid with $2n$ steps. The limits are
+      \BA{
+        S_n(W,\tt{left})&\to\f{W_1^2-1}{2}, \\
+        S_n(W,\tt{mid})&\to\f{W_1^2}{2}, \\
+        S_n(W,\tt{right})&\to\f{W_1^2+1}{2}.
+      }
+      The left--midpoint and left--right differences approach $1/2$
+      and $1$, respectively, so the tag choice matters for this
+      stochastic integrand.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.75\textwidth]{wiener_tag_differences_output.png}
-  \caption{Maximum absolute left--midpoint and left--right tag
-    differences for the stochastic integrand $f(t)=W_t$}
-  \label{fig:wiener-tag-differences-output}
-\end{figure}
+      \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{wiener_tag_differences_output.png}
+        \caption{Maximum absolute left--midpoint and left--right tag
+        differences for the stochastic integrand $f(t)=W_t$}
+        \label{fig:wiener-tag-differences-output}
+      \end{figure}
 
-\clearpage
+      \clearpage
 
-\ZS{Collaboration Questions}
-\BN{
-\item
-  \BV{
-  \item Did you receive any help whatsoever from anyone in solving
-    this assignment? Yes.
-  \item If you answered `yes', give full details. OpenAI Codex
-    helped implement and execute the notebook for Task 4, generate
-    the figures, and write the corresponding explanations in this
-    document.
-  }
-\item
-  \BV{
-  \item Did you give any help whatsoever to anyone in solving this
-    assignment? No.
-  \item If you answered `yes', give full details. N/A.
-  }
-\item
-  \BV{
-  \item Did you find or come across code that implements any part of
-    this assignment? Yes.
-  \item If you answered `yes', give full details. OpenAI Codex
-    generated the initial implementation in
-    \texttt{hw2/coding/Stochastic\_Integrals.ipynb} using the
-    provided Wiener process notebook as a reference. I edited
-    that notebook, and Codex added the figure export calls.
-  }
-}
+      \ZS{Collaboration Questions}
+      \BN{
+      \item
+        \BV{
+        \item Did you receive any help whatsoever from anyone in solving
+          this assignment? No.
+        \item If you answered `yes', give full details. N/A
+        }
+      \item
+        \BV{
+        \item Did you give any help whatsoever to anyone in solving this
+          assignment? No.
+        \item If you answered `yes', give full details. N/A.
+        }
+      \item
+        \BV{
+        \item Did you find or come across code that implements any part of
+          this assignment? No.
+        \item If you answered `yes', give full details. N/A
+        }
+      }
 
-\end{document}
+      \end{document}
